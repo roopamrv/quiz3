@@ -1,0 +1,57 @@
+
+
+<html>
+    <title>Search by Lat and Long</title>
+    <h2> Roopam Verma 7590</h2>
+    <head>Lat and Long search</head>
+    <form action="/minmax" method="POST">
+        <label for="minlat">Enter min Latitude: </label>
+        <input type="text" id="minlat" name="minlat"><br><br>
+
+        <label for="minlong">Enter min Longitude: </label>
+        <input type="text" id="minlong" name="minlong"><br><br>
+
+        <label for="maxlat">Enter max Latitude: </label>
+        <input type="text" id="maxlat" name="maxlat"><br><br>
+
+        <label for="maxlong">Enter max Longitude: </label>
+        <input type="text" id="maxlong" name="maxlong"><br><br>
+
+        <button type="submit" value="Search">Search</button>
+      </form>
+
+      <!-- <table>
+        {% for val in minmax  %}
+        {% for key in val %}
+        <tr> {{ key }} </tr>
+        {% endfor %}
+        {% endfor %}
+      </table> -->
+      <table id="table" class="table" >
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Place</th>
+                <th>Net</th>
+                <th>Mag</th>
+            </tr>
+    
+            
+        </thead>
+        <tbody>
+          {% for val in latlong  %}
+          <tr>
+          <td>{{val['time']}}</td>
+          <td>{{val['latitude']}}</td>
+          <td>{{val['longitude']}}</td>
+          <td>{{val['place']}}</td>
+          <td>{{val['net']}}</td>
+          <td>{{val['mag']}}</td>
+          </tr>
+          {%endfor%}
+        </tbody>
+        
+</html>
+

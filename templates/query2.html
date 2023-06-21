@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+</head>
+
+<body>
+<h3>Roopam Verma</h3>
+
+<h4> QUERY: {{query}}</h4>
+<h4>TIME TAKEN TO EXECUTE QUERY: {{time_taken}} sec</h4>
+
+<table border="2px">
+    <tr><td>Latitude</td><td>Longitude</td><td>Place</td><td>Time</td></tr>
+    {% for obj in tableData %}
+        <tr>
+            <td>{{obj.latitude}}</td>
+            <td>{{obj.longitude}}</td>
+            <td>{{obj.place}}</td>
+            <td>{{obj.time}}</td>
+	    </tr>
+    {% endfor %}
+</table>
+
+</div>
+</body>
+</html>

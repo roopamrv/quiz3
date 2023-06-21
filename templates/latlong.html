@@ -1,0 +1,24 @@
+
+
+<html>
+    <title>Search by date and Magnitude</title>
+    <h2> Roopam Verma 7590</h2>
+    <head>Time search</head>
+    <form action="/latlong" method="POST">
+        <label for="time">Enter time:</label>
+        <input type="text" id="time" name="time">
+        <button type="submit" value="Search">Search</button>
+      </form>
+
+      <table>
+        {% for val in latlong  %}
+        <h5 class="card-subtitle mb-2 text-muted"><b>Time - </b>{{val['time']}}</h5>
+        <h5 class="card-subtitle mb-2 text-muted"><b>Latitude - </b>{{val['latitude']}}</h5>
+        <h5 class="card-subtitle mb-2 text-muted"><b>Longitude - </b>{{val['longitude']}}</h5>
+        <h5 class="card-subtitle mb-2 text-muted"><b>Place - </b>{{val['place']}}</h5>
+        <h5 class="card-subtitle mb-2 text-muted"><b>Net - </b>{{val['net']}}</h5>
+        <h5 class="card-subtitle mb-2 text-muted"><b>Mag - </b>{{val['mag']}}</h5>
+        {% endfor %}
+      </table>
+</html>
+

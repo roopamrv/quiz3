@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<html>
+	<head>
+		<title>Add Record</title>
+		<link rel="stylesheet" href="/static/css/bootstrap.css">
+	</head>
+	<body></br>
+	<section class="vh-100" style="background-color: #eee;">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-12 col-xl-11">
+        <div class="card text-black" style="border-radius: 25px;">
+			</br>
+			<div class="header">
+				<h2 class="word" align="center">People</h2>
+			</div>
+			</br></br>
+			<div class="header">
+				<h3 class="word" align="center">Add Record</h3>
+			</div>
+				<form class="col-lg-6 offset-lg-3 " action="/addrecord" method="post" enctype="multipart/form-data">
+				<div class="msg">{{ msg }}</div>
+					<div class="row justify-content-center">
+						<input class="form-control" id="name" name="name" type="text" placeholder="Time" class="textbox"/></br></br>
+						<input class="form-control" id="state" name="state" type="text" placeholder="Latitude" class="textbox"/></br></br>
+						<input class="form-control" id="salary" name="salary" type="text" placeholder="Longitude" class="textbox"/></br></br>
+						<input class="form-control" id="grade" name="grade" type="text" placeholder="Mag" class="textbox"/></br></br>
+						<input class="form-control" id="room" name="room" type="text" placeholder="Net" class="textbox"/></br></br>
+						<input class="form-control" id="phone" name="phone" type="number" placeholder="Place" class="textbox"/></br></br>
+						<input class="form-control" name="image" type="file" placeholder="image"/></br></br>
+						<textarea class="form-control" id="keywords" name="keywords" type="text" placeholder="Keywords" rows="3"></textarea></br></br>
+
+					<button type="submit" class="btn btn-primary">Add</button></br>
+					</div></form>
+	</div></div></div>
+  </div></section>
+	</body>
+</html>
+{% endblock %}

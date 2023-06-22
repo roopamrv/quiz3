@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS tableName;
 
 CREATE TABLE tableName 
 (
-    time	VARCHAR(512),
+    time INT,
     latitude NUMERIC(11,8) 
     , longitude NUMERIC(11,8),
     mag	NUMERIC(11,8),

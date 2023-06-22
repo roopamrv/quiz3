@@ -6,6 +6,7 @@ from werkzeug.utils import secure_filename
 import time
 import redis
 import _pickle as cPickle
+import random
 
 app = Flask(__name__)
 app.config['UPLOAD_PATH'] = "./uploads"
@@ -73,6 +74,26 @@ def selectBQuery():
 
     return render_template('query2.html', tableData=result , time_taken = time_taken , query = query)
 
+@app.route('/searchByLatAgeRandom', methods=['POST'])
+def selectCQuery():
+    print(request.form.get('count'))
+    cursor = conn.cursor()
+    #cursor.execute('select count(*) from testdb.table_1 where Latitude between '+request.form.get('lat_1')+' and '+request.form.get('lat_2')+' and Age between '+request.form.get('age_1')+' and '+request.form.get('age_2')+' ; ')
+    #cursor.execute('SELECT GivenName, City, State FROM testdb.table_1 where city like \'%' + request.form.get('city') + '\' ;')
+    #result1 = cursor.fetchall()
+
+    beforeTime = time.time()
+    for x in range(1, int(request.form.get('count'))):
+        rand_number = random.randrange(0, int(request.form.get('count')))
+        sql = 'select latitude, longitude, place ,time from tableName where time between '+request.form.get('lat_1')+' and '+request.form.get('lat_2')+' LIMIT {}; '.format(rand_number)
+        cursor.execute(sql)
+        #cursor.execute('SELECT GivenName, City, State FROM testdb.table_1 where city like \'%' + request.form.get('city') + '\' ;')
+        result = cursor.fetchall()
+        print( str(x) +' : '+ str(len(result)))
+    
+    afterTime = time.time()
+    timeDifference = afterTime - beforeTime
+    return render_template('query4.html', time=timeDifference)
 # @app.route('/select', methods=['POST'])
 # def select():
 #     time1 =request.form['time11']

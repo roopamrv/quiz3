@@ -39,10 +39,33 @@ def selectBQuery():
     cursor.execute(query)
     end_time = time.time()
     result = cursor.fetchall()
-    print(result)
+    #print(result)
     time_taken = end_time-start_time
     #print(result)
     return render_template('query2.html', tableData=result , time_taken = time_taken , query = query)
+
+
+@app.route('/selectBQuery2', methods=['POST'])
+def selectBQuery2():
+    time1 =request.form['time1']
+    time2 =request.form['time2']
+
+    # print("MAG1",type(mag1).__name__)
+    # print("MAG2",type(mag1).__name__)
+    # print(mag1,mag2)
+
+    #cursor.execute('''SELECT time,latitude, longitude, mag, place FROM [dbo].[demo_data] where mag>='2' and mag <'5';''')
+    query = "select latitude, longitude, place , time from tablename where time >= " + time1 + " and time < " + time2 +";"
+    print(query)
+    start_time = time.time()
+    cursor.execute(query)
+    end_time = time.time()
+    result = cursor.fetchall()
+    #print(result)
+    time_taken = end_time-start_time
+    #print(result)
+    return render_template('query3.html', tableData=result , time_taken = time_taken , query = query)
+
 
 
 # def latlong2():

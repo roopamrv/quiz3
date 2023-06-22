@@ -47,12 +47,12 @@ def selectBQuery():
     #cursor.execute('''SELECT time,latitude, longitude, mag, place FROM [dbo].[demo_data] where mag>='2' and mag <'5';''')
     query = 'select latitude, longitude, place ,time from tableName where time >= '+ time1 + ' and time < ' + time2
     #query = 'select latitude, longitude, place ,time from tableName where time between '+request.form.get('time1')+' or '+request.form.get('time2')
-    print(query)
+    #print(query)
     start_time = time.time()
     cursor.execute(query)
     end_time = time.time()
     result = cursor.fetchall()
-    print(result)
+    #print(result)
     time_taken = end_time-start_time
     #print(result)
     

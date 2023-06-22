@@ -4,10 +4,16 @@ import re
 import os
 from werkzeug.utils import secure_filename
 import time
+import redis
+import _pickle as cPickle
 
 app = Flask(__name__)
 app.config['UPLOAD_PATH'] = "./uploads"
 app.secret_key = 'your secret key'
+
+red = redis.StrictRedis(host='roopamdns.redis.cache.windows.net',port=6380, db=0, password='UKpCfgBxKqwBwPo53Rjn7HNA7kl5JJaIjAzCaEuT3pg=', ssl=True)
+#host=rds_hostname
+result = red.ping()
 
 server = 'mysqlserver-rv.database.windows.net'
 username = 'azureuser'
@@ -18,10 +24,15 @@ driver= '{ODBC Driver 18 for SQL Server}'
 conn = pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+',1433;DATABASE='+database+';UID='+username+';PWD='+ password+ ';Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
 cursor = conn.cursor()
 
+
+print("Ping returned : " + str(result))
 @app.route('/')
 def home():
     return render_template('index.html')
 
+@app.route('/query2', methods=['GET'])
+def query2():
+    return render_template('query2.html')
 
 @app.route('/selectBQuery', methods=['POST'])
 def selectBQuery():
@@ -33,38 +44,55 @@ def selectBQuery():
     # print(mag1,mag2)
 
     #cursor.execute('''SELECT time,latitude, longitude, mag, place FROM [dbo].[demo_data] where mag>='2' and mag <'5';''')
-    query = "select latitude, longitude, place , time from tablename where time >= " + time1 + " and time < " + time2 +";"
+    query = "select latitude, longitude, place ,time from tableName where time >= " + time1 + " or time< " + time2 +";"
     print(query)
     start_time = time.time()
     cursor.execute(query)
     end_time = time.time()
     result = cursor.fetchall()
-    #print(result)
+    print(result)
     time_taken = end_time-start_time
     #print(result)
+    
+    start_time = time.time()
+    #result = red.get('selectBQuery'+mag1+mag2)
+    if red.get('selectBQuery'+time1+time2):
+        result = cPickle.loads(red.get('selectBQuery'+time1+time2))
+        end_time = time.time()
+        time_taken = end_time-start_time
+        print("returned from cache....", result)
+    #cursor.execute('''SELECT time,latitude, longitude, mag, place FROM [dbo].[demo_data] where mag>='2' and mag <'5';''')
+    else:
+        start_time = time.time()
+        cursor.execute(query)
+        end_time = time.time()
+        result = cursor.fetchall()
+        time_taken = end_time-start_time
+        print("Inside....")
+        red.set('selectBQuery'+time1+time2,cPickle.dumps(result))
+
     return render_template('query2.html', tableData=result , time_taken = time_taken , query = query)
 
+# @app.route('/select', methods=['POST'])
+# def select():
+#     time1 =request.form['time11']
+#     time2 =request.form['time22']
 
-@app.route('/selectBQuery2', methods=['POST'])
-def selectBQuery2():
-    time1 =request.form['time1']
-    time2 =request.form['time2']
+#     # print("MAG1",type(mag1).__name__)
+#     # print("MAG2",type(mag1).__name__)
+#     # print(mag1,mag2)
 
-    # print("MAG1",type(mag1).__name__)
-    # print("MAG2",type(mag1).__name__)
-    # print(mag1,mag2)
-
-    #cursor.execute('''SELECT time,latitude, longitude, mag, place FROM [dbo].[demo_data] where mag>='2' and mag <'5';''')
-    query = "select latitude, longitude, place , time from tablename where time >= " + time1 + " and time < " + time2 +";"
-    print(query)
-    start_time = time.time()
-    cursor.execute(query)
-    end_time = time.time()
-    result = cursor.fetchall()
-    #print(result)
-    time_taken = end_time-start_time
-    #print(result)
-    return render_template('query3.html', tableData=result , time_taken = time_taken , query = query)
+#     #cursor.execute('''SELECT time,latitude, longitude, mag, place FROM [dbo].[demo_data] where mag>='2' and mag <'5';''')
+#     query1 = "select latitude, longitude, place , time from tableName where time >= " + time1 + " or time < " + time2 +";"
+#     print(query1)
+#     start_time = time.time()
+#     cursor.execute(query1)
+#     end_time = time.time()
+#     result = cursor.fetchall()
+#     #print(result)
+#     time_taken = end_time-start_time
+#     #print(result)
+#     return render_template('query3.html', tableData=result , time_taken = time_taken , query = query1)
 
 
 

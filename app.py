@@ -26,7 +26,7 @@ conn = pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+',1433;DATABASE='+d
 cursor = conn.cursor()
 
 
-print("Ping returned : " + str(result))
+print("Ping Returned : " + str(result))
 @app.route('/')
 def home():
     return render_template('index.html')

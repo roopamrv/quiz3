@@ -84,17 +84,18 @@ def selectCQuery():
     #result1 = cursor.fetchall()
 
     beforeTime = time.time()
-    for x in range(1, int(request.form.get('count'))):
-        rand_number = random.randrange(0, int(request.form.get('count')))
-        sql = 'select latitude, longitude, place ,time from tableName where time between '+request.form.get('lat_1')+' or '+request.form.get('lat_2')+' LIMIT {}; '.format(rand_number)
-        cursor.execute(sql)
+    #for x in range(1, int(request.form.get('count'))):
+        #rand_number = random.randrange(0, int(request.form.get('count')))
+    rand_number = request.form.get('count')
+        #sql = 'select latitude, longitude, place ,time from tableName where time between '+request.form.get('lat_1')+' or '+request.form.get('lat_2')+' LIMIT {}; '.format(rand_number)
+    sql = 'select latitude, longitude, place ,time from tableName where time between '+request.form.get('lat_1')+' and '+request.form.get('lat_2')+' LIMIT '+ (rand_number)+';'
+    cursor.execute(sql)
         #cursor.execute('SELECT GivenName, City, State FROM testdb.table_1 where city like \'%' + request.form.get('city') + '\' ;')
-        result = cursor.fetchall()
-        print( str(x) +' : '+ str(len(result)))
-    
+    result = cursor.fetchall()
+    #print( str(x) +' : '+ str(len(result)))
     afterTime = time.time()
     timeDifference = afterTime - beforeTime
-    return render_template('query4.html', time=timeDifference)
+    return render_template('query4.html', time=timeDifference,query1 = sql)
 # @app.route('/select', methods=['POST'])
 # def select():
 #     time1 =request.form['time11']

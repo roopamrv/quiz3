@@ -76,21 +76,21 @@ def selectCQuery():
     #cursor.execute('select count(*) from testdb.table_1 where Latitude between '+request.form.get('lat_1')+' and '+request.form.get('lat_2')+' and Age between '+request.form.get('age_1')+' and '+request.form.get('age_2')+' ; ')
     #cursor.execute('SELECT GivenName, City, State FROM testdb.table_1 where city like \'%' + request.form.get('city') + '\' ;')
     #result1 = cursor.fetchall()
-
+    lat1 = request.form.get('lat_1')
+    lat2 = request.form.get('lat_2')
+    print(" LAT1 and Lat2: ",lat1,lat2)
     beforeTime = time.time()
-    for x in range(1, int(request.form.get('count'))):
-        rand_number = random.randrange(0, int(request.form.get('count')))
+
         #rand_number = request.form.get('count')
-        sql = 'select latitude, longitude, place ,time from tableName where time between '+request.form.get('lat_1')+' or '+request.form.get('lat_2')+' LIMIT {}; '.format(rand_number)
-        print("SQL2: ",sql)
+    sql = 'select top ' +request.form.get('count')+' latitude, longitude, place ,time from tableName where time >= '+lat1+' and time < '+lat2
+    print("SQL2: ",sql)
         #sql = 'select latitude, longitude, place ,time from tableName where time between '+request.form.get('lat_1')+' and '+request.form.get('lat_2')+' LIMIT '+ (rand_number)+';'
-        cursor.execute(sql)
+    cursor.execute(sql)
         #cursor.execute('SELECT GivenName, City, State FROM testdb.table_1 where city like \'%' + request.form.get('city') + '\' ;')
-        result = cursor.fetchall()
-        print( str(x) +' : '+ str(len(result)))
-        afterTime = time.time()
-        timeDifference = afterTime - beforeTime
-    return render_template('query4.html', time=timeDifference,query1 = sql)
+    result = cursor.fetchall()
+    afterTime = time.time()
+    timeDifference = afterTime - beforeTime
+    return render_template('query3.html', time=timeDifference,query1 = sql, tableData = result)
     
 if __name__ == '__main__':
      app.run(host='0.0.0.0', port=6600, threaded=True,debug=True)
